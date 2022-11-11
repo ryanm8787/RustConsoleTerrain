@@ -1,23 +1,27 @@
 use std::io;
 
-use std::collections::HashMap;
+pub mod terrgen;
 
 fn main() {
     println!("Please enter a a width:");   
 
-    let mut input_string = String::new(); 
+    let mut input_string_width = String::new(); 
     
     io::stdin()
-        .read_line(&mut input_string)
+        .read_line(&mut input_string_width)
         .expect("Failed to read line");
 
     // NOTE: this trim is needed to remove whitespace from console.
-    let input_width : i32 = input_string.trim().parse().expect("");
+    let input_width : i32 = input_string_width.trim().parse().expect("Failed to convert str->int.");
 
-    // generate terrian 
-    let mut scores = HashMap::new();
+    println!("Please enter a a height:");   
 
-    scores.insert(String::from("Blue"), 10);
+    let mut input_string_height = String::new(); 
 
+    io::stdin()
+        .read_line(&mut input_string_height)
+        .expect("Failed to read line");
 
+    let input_height : i32 = input_string_height.trim().parse().expect("Failed to convert str->int.");
+    println!("{}, {}", input_width, input_height);   
 }
