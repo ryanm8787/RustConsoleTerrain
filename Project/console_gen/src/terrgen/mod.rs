@@ -1,12 +1,15 @@
-mod terrgen {
+pub mod terrgen {
 
 use rand::Rng;
+use serde_json::Result;
 
 pub struct Generator {
-    max_height : i32,
-    max_width : i32,
-    current_gradient : i32,
-    map : String,
+    pub floor : i32,
+    pub ceiling : i32,
+    pub width : i32,
+    pub height : i32,
+    pub current_gradient : i32,
+    pub map : String,
 }
 
 impl Generator {
@@ -16,9 +19,13 @@ impl Generator {
         let mut rng = rand::thread_rng();
             
         self.current_gradient = rng.gen_range(0..2);
-        println!("current gradeint {}", self.current_gradient);
     }
 
+
+    pub fn generate_terrain(&mut self)
+    {
+
+    }
 }
 
 } // terrgen

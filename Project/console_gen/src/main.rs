@@ -1,27 +1,30 @@
-use std::io;
 
-pub mod terrgen;
+mod terrgen;
+
+use std::fs;
+use crate::terrgen::terrgen::Generator;
+
+fn to_my_type(value: serde_json::Value) -> i32 {
+    serde_json::from_value(value).unwrap()
+}
 
 fn main() {
-    println!("Please enter a a width:");   
+    let mut json_file_path = String::from("/home/gen_terr/Project/console_gen/config/config.json"); 
 
-    let mut input_string_width = String::new(); 
+    let data = fs::read_to_string(&json_file_path)
+        .expect("Unable to read file");
+
+    let json: serde_json::Value = serde_json::from_str(&data)
+        .expect("JSON does not have correct format.");
+
+
+    let test : i32 =  to_my_type(json["ceiling"].clone());
     
-    io::stdin()
-        .read_line(&mut input_string_width)
-        .expect("Failed to read line");
 
-    // NOTE: this trim is needed to remove whitespace from console.
-    let input_width : i32 = input_string_width.trim().parse().expect("Failed to convert str->int.");
+    println!("{}", test);
+    let generator = Generator 
+             {ceiling : to_my_type(json["ceiling"].clone()), width : to_my_type(json["width"].clone()), height : to_my_type(json["height"].clone()), 
+             floor : to_my_type(json["floor"].clone()), current_gradient : 0, map : String::from("")}; 
 
-    println!("Please enter a a height:");   
-
-    let mut input_string_height = String::new(); 
-
-    io::stdin()
-        .read_line(&mut input_string_height)
-        .expect("Failed to read line");
-
-    let input_height : i32 = input_string_height.trim().parse().expect("Failed to convert str->int.");
-    println!("{}, {}", input_width, input_height);   
+    
 }
