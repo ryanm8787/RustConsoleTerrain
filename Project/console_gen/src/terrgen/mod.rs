@@ -41,14 +41,30 @@ impl Generator {
             self.map.push_str(" ");
             current_x_ct += 1;
         };
-
-        println!("map: \n{}", self.map)
     }
 
+    fn generate_floor(&mut self)
+    {
+        let mut x_counter : usize = 0;
+
+        loop {
+            if x_counter == self.width as usize
+            {
+                break;
+            }
+            
+            let mut indx : usize = (self.floor as usize) * (self.width as usize) + x_counter;
+            self.map.replace_range(indx..indx, "1");
+            
+            x_counter += 1;
+        };
+        println!("map: \n{}", self.map)
+    }
 
     pub fn generate_terrain(&mut self)
     {
         self.generate_empty_string();
+        self.generate_floor();
     }
 }
 

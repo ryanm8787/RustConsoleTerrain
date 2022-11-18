@@ -17,9 +17,7 @@ fn main() {
     let json: serde_json::Value = serde_json::from_str(&data)
         .expect("JSON does not have correct format.");
 
-
     let test : i32 =  to_my_type(json["ceiling"].clone());
-    
 
     println!("{}", test);
     let mut generator = Generator 
