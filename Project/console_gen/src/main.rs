@@ -22,9 +22,9 @@ fn main() {
     
 
     println!("{}", test);
-    let generator = Generator 
+    let mut generator = Generator 
              {ceiling : to_my_type(json["ceiling"].clone()), width : to_my_type(json["width"].clone()), height : to_my_type(json["height"].clone()), 
              floor : to_my_type(json["floor"].clone()), current_gradient : 0, map : String::from("")}; 
 
-    
+    generator.generate_terrain();
 }
