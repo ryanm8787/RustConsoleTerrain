@@ -1,6 +1,6 @@
 {
     "floor": 0,
-    "ceiling": 20,
+    "ceiling": 50,
     "width": 120,
-    "height": 30
+    "height": 60
 }

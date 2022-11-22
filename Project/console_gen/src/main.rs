@@ -1,4 +1,3 @@
-
 mod terrgen;
 
 use std::fs;
@@ -9,7 +8,7 @@ fn to_my_type(value: serde_json::Value) -> i32 {
 }
 
 fn main() {
-    let mut json_file_path = String::from("/home/gen_terr/Project/console_gen/config/config.json"); 
+    let json_file_path = String::from("/home/gen_terr/Project/console_gen/config/config.json"); 
 
     let data = fs::read_to_string(&json_file_path)
         .expect("Unable to read file");
@@ -17,9 +16,6 @@ fn main() {
     let json: serde_json::Value = serde_json::from_str(&data)
         .expect("JSON does not have correct format.");
 
-    let test : i32 =  to_my_type(json["ceiling"].clone());
-
-    println!("{}", test);
     let mut generator = Generator 
              {ceiling : to_my_type(json["ceiling"].clone()), width : to_my_type(json["width"].clone()), height : to_my_type(json["height"].clone()), 
              floor : to_my_type(json["floor"].clone()), current_gradient : 0, map : String::from("")}; 

@@ -18,7 +18,7 @@ impl Generator {
     {
         let mut rng = rand::thread_rng();
             
-        self.current_gradient = rng.gen_range(0..2);
+        self.current_gradient = rng.gen_range(-1..1);
     }
 
     fn generate_empty_string(&mut self)
@@ -46,14 +46,27 @@ impl Generator {
     fn generate_floor(&mut self)
     {
         let mut x_counter : usize = 0;
-
+        let mut height_current : i32 = self.ceiling;
         loop {
             if x_counter == self.width as usize
             {
                 break;
             }
             
-            let mut indx : usize = (self.floor as usize) * (self.width as usize) + x_counter;
+            self.update_gradient();
+
+            height_current += self.current_gradient;
+            println!("{}", height_current);
+            if(height_current > self.ceiling)
+            {
+                height_current = self.ceiling;   
+            }
+            else if(height_current < self.floor)
+            {
+                height_current = self.floor;
+            }
+
+            let indx : usize = (height_current as usize) * (self.width as usize) + x_counter;
             self.map.replace_range(indx..indx, "1");
             
             x_counter += 1;
