@@ -7,6 +7,7 @@ fn to_my_type(value: serde_json::Value) -> i32 {
     serde_json::from_value(value).unwrap()
 }
 
+// this will run an example demo
 fn main() {
     let json_file_path = String::from("/home/gen_terr/Project/console_gen/config/config.json"); 
 
@@ -18,7 +19,7 @@ fn main() {
 
     let mut generator = Generator 
              {ceiling : to_my_type(json["ceiling"].clone()), width : to_my_type(json["width"].clone()), height : to_my_type(json["height"].clone()), 
-             floor : to_my_type(json["floor"].clone()), current_gradient : 0, map : String::from("")}; 
+             floor : to_my_type(json["floor"].clone()), current_gradient : 0, map : Vec::new(), indx_map : Vec::new()}; 
 
     generator.generate_terrain();
 }

@@ -1,7 +1,6 @@
 pub mod terrgen {
 
 use rand::Rng;
-use serde_json::Result;
 
 pub struct Generator {
     pub floor : i32,
@@ -9,7 +8,8 @@ pub struct Generator {
     pub width : i32,
     pub height : i32,
     pub current_gradient : i32,
-    pub map : String,
+    pub map : Vec<Vec<String>>,
+    pub indx_map : Vec<usize>,
 }
 
 impl Generator {
@@ -18,33 +18,102 @@ impl Generator {
     {
         let mut rng = rand::thread_rng();
             
-        self.current_gradient = rng.gen_range(-1..1);
+        self.current_gradient = rng.gen_range(-1..2);
     }
 
     fn generate_empty_string(&mut self)
     {
-        let mut current_x_ct : i32 = 0;
-        let mut current_y_ct : i32 = 0;
-        
-        loop {
-            if current_x_ct == self.width
+        let mut vec_counter : i32 = 0;
+    
+        // create vectors
+        loop 
+        {
+            if vec_counter == self.height
             {
-                current_x_ct = 0;
-                current_y_ct += 1;
-                self.map.push_str("\n");
-                if current_y_ct == self.height 
+                break;
+            }
+            let mut new_vec : Vec<String> = Vec::new();
+
+            let mut vec_element_counter : i32 = 0;
+            loop 
+            {
+                if vec_element_counter == self.width
                 {
                     break;
                 }
+                vec_element_counter += 1;
+                new_vec.push(" ".to_string());
             }
-            
-            self.map.push_str(" ");
-            current_x_ct += 1;
+            new_vec.push("\n".to_string());
+
+            self.map.push(new_vec);
+            vec_counter += 1;
         };
     }
 
+    // TODO
+    fn fill_empty_terrain(&mut self)
+    {
+        let mut floor_counter : usize = 0;
+        
+        loop {
+            if floor_counter == self.height as usize
+            {
+                break;
+            }
+
+            if self.indx_map[floor_counter] > 0
+            {
+                let mut floor_start = self.indx_map[floor_counter] - 1;
+                loop 
+                {
+                    println!("{} {}", floor_counter, floor_start);
+
+                    self.map[floor_counter][floor_start].clear();
+                    self.map[floor_counter][floor_start].insert_str(0, "0");
+                    
+                    if floor_start <= 0
+                    {
+                        break;
+                    }
+
+                    floor_start -=1;
+                }
+            }
+            floor_counter += 1;
+        };
+    }
+
+    fn print_final(&mut self)
+    {
+        let mut vec_counter : usize = 0;
+
+        // create vectors
+        loop 
+        {
+            if vec_counter == self.height as usize
+            {
+                break;
+            }
+            let mut vec_element_counter : usize = 0;
+            loop 
+            {
+                if vec_element_counter == self.width as usize
+                {
+                    break;
+                }
+
+                print!("{}", self.map[vec_counter][vec_element_counter]);
+                vec_element_counter += 1;
+            }
+
+            vec_counter += 1;
+        };
+    }
+    
     fn generate_floor(&mut self)
     {
+        self.indx_map = Vec::new();
         let mut x_counter : usize = 0;
         let mut height_current : i32 = self.ceiling;
         loop {
@@ -56,28 +125,47 @@ impl Generator {
             self.update_gradient();
 
             height_current += self.current_gradient;
-            println!("{}", height_current);
-            if(height_current > self.ceiling)
+            if height_current > self.ceiling
             {
                 height_current = self.ceiling;   
             }
-            else if(height_current < self.floor)
+            else if height_current < self.floor
             {
                 height_current = self.floor;
             }
 
-            let indx : usize = (height_current as usize) * (self.width as usize) + x_counter;
-            self.map.replace_range(indx..indx, "1");
-            
+            self.map[height_current as usize][x_counter].clear();
+            self.map[height_current as usize][x_counter].insert_str(0, "1");
+            self.indx_map.push(x_counter);
             x_counter += 1;
         };
-        println!("map: \n{}", self.map)
+        // we will return the map here once generation is complete
+        
+        let mut print_counter_x : usize = 0; 
+        let mut print_counter_y : usize = 0;
+        loop
+        {
+            if print_counter_x >= self.map[print_counter_y].len()
+            {
+                print_counter_y += 1;
+                print_counter_x = 0;
+            }
+
+            if print_counter_y == self.map.len()
+            {
+                break;
+            }
+
+            print_counter_x += 1;
+        };
     }
 
     pub fn generate_terrain(&mut self)
     {
         self.generate_empty_string();
         self.generate_floor();
+        self.fill_empty_terrain();
+        self.print_final();
     }
 }
 
