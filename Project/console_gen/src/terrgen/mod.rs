@@ -140,7 +140,6 @@ impl Generator {
             self.indx_map.push(height_current as usize);
             x_counter += 1;
         };
-        // we will return the map here once generation is complete
         
         let mut print_counter_x : usize = 0; 
         let mut print_counter_y : usize = 0;
