@@ -54,33 +54,34 @@ impl Generator {
     // TODO
     fn fill_empty_terrain(&mut self)
     {
-        let mut floor_counter : usize = 0;
+        let mut x_counter : usize = 0;
         
         loop {
-            if floor_counter == self.height as usize
+            if x_counter == self.width as usize
             {
                 break;
             }
+            let mut y_counter : i32 = 0;
 
-            if self.indx_map[floor_counter] > 0
+            if (self.indx_map[x_counter] as i32) < (self.height as i32) - 1
             {
-                let mut floor_start = self.indx_map[floor_counter] - 1;
-                loop 
-                {
-                    println!("{} {}", floor_counter, floor_start);
-
-                    self.map[floor_counter][floor_start].clear();
-                    self.map[floor_counter][floor_start].insert_str(0, "0");
-                    
-                    if floor_start <= 0
-                    {
-                        break;
-                    }
-
-                    floor_start -=1;
-                }
+                y_counter = (self.indx_map[x_counter] as i32) + 1;
             }
-            floor_counter += 1;
+
+            loop 
+            {
+                if y_counter >= self.height
+                {
+                    break;
+                }
+
+                self.map[y_counter as usize][x_counter].clear();
+                self.map[y_counter as usize][x_counter].insert_str(0, "0");
+
+                y_counter += 1; 
+            }
+
+            x_counter += 1;
         };
     }
 
@@ -136,7 +137,7 @@ impl Generator {
 
             self.map[height_current as usize][x_counter].clear();
             self.map[height_current as usize][x_counter].insert_str(0, "1");
-            self.indx_map.push(x_counter);
+            self.indx_map.push(height_current as usize);
             x_counter += 1;
         };
         // we will return the map here once generation is complete
