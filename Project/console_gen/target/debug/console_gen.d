@@ -1,1 +1,1 @@
-/home/gen_terr/Project/console_gen/target/debug/console_gen: /home/gen_terr/Project/console_gen/src/main.rs /home/gen_terr/Project/console_gen/src/terrgen/mod.rs
+/home/rust/target/debug/console_gen: /home/rust/src/main.rs /home/rust/src/server/mod.rs /home/rust/src/terrgen/mod.rs

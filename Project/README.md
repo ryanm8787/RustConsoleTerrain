@@ -1,0 +1,1 @@
+docker run -it -v C:\Users\rmcdo\Desktop\Projects\RustConsoleTerrain\Project\console_gen\:/home/rust --entrypoint bash rust_test_container

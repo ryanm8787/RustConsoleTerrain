@@ -5,19 +5,19 @@
 <p1>Please select an Algorithm via the dropdown.</p1>
 <style>
 .square {
-    height: 50px;
+    height: 16px;
     position: absolute;
-    width: 50px;
-    outline: 4px solid black;
+    width: 16px;
+    outline: 2px solid black;
     background-color:  brown;
 }
 </style>
 <h2></h2>
 <script>    
-    var width = 16;
-    var height = 16;
+    var width = 32;
+    var height = 32;
     var y_counter = 150;
-
+    var block_size = 16;
     for(let j = 0; j < height; j++)
     {
         var x_counter = 0;
@@ -30,9 +30,9 @@
             square_test.style.top = y_counter + 'px';
             // Append to body:
             document.body.appendChild(square_test);
-            x_counter += 50;
+            x_counter += block_size;
         }
-        y_counter += 50;
+        y_counter += block_size;
     }
 </script>
 </html> 

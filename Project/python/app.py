@@ -1,4 +1,5 @@
 import os
+import json
 
 from flask import (
     Blueprint, flash, g, Flask, redirect, render_template, request, session, url_for
@@ -7,10 +8,20 @@ from flask import (
 app = Flask(__name__)
 
 
-# a simple page that says hello
 @app.route('/')
 def test_page():
     return render_template('base.html')
+
+
+@app.route('/data', methods=('GET', 'POST'))
+def current_data():
+    my_text = "<p>Nice test.</p>"
+    print(request)
+    if request.method == 'POST':
+        print(request)
+        my_text = "<p>" + json.dumps(request.get_json()) + "</p>"
+
+    return my_text
 
 
 if __name__ == "__main__":
