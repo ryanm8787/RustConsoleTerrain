@@ -7,6 +7,7 @@ from flask import (
 
 app = Flask(__name__)
 
+my_text = ""
 
 @app.route('/')
 def test_page():
@@ -15,10 +16,8 @@ def test_page():
 
 @app.route('/data', methods=('GET', 'POST'))
 def current_data():
-    my_text = "<p>Nice test.</p>"
-    print(request)
+    global my_text
     if request.method == 'POST':
-        print(request)
         my_text = "<p>" + json.dumps(request.get_json()) + "</p>"
 
     return my_text

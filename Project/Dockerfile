@@ -4,7 +4,7 @@ ARG DEBIAN_FRONTEND=noninteractive
 
 RUN apt-get update -y
 RUN apt-get upgrade -y
-RUN apt-get install curl build-essential pkg-config openssl -y
+RUN apt-get install curl build-essential pkg-config openssl iproute2 -y
 
 # Rust install
 RUN curl https://sh.rustup.rs -sSf | bash -s -- -y

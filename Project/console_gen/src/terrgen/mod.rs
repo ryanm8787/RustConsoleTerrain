@@ -84,33 +84,6 @@ impl Generator {
             x_counter += 1;
         };
     }
-
-    fn print_final(&mut self)
-    {
-        let mut vec_counter : usize = 0;
-
-        // create vectors
-        loop 
-        {
-            if vec_counter == self.height as usize
-            {
-                break;
-            }
-            let mut vec_element_counter : usize = 0;
-            loop 
-            {
-                if vec_element_counter == self.width as usize
-                {
-                    break;
-                }
-
-                print!("{}", self.map[vec_counter][vec_element_counter]);
-                vec_element_counter += 1;
-            }
-
-            vec_counter += 1;
-        };
-    }
     
     fn generate_floor(&mut self)
     {
@@ -140,32 +113,41 @@ impl Generator {
             self.indx_map.push(height_current as usize);
             x_counter += 1;
         };
-        
-        let mut print_counter_x : usize = 0; 
-        let mut print_counter_y : usize = 0;
+    }
+
+    fn convert_map_to_str(&mut self) -> String
+    {
+        let mut str_map = String::from("");
+
+        let mut counter_x : usize = 0; 
+        let mut counter_y : usize = 0;
         loop
         {
-            if print_counter_x >= self.map[print_counter_y].len()
+            if counter_x >= self.map[counter_y].len()
             {
-                print_counter_y += 1;
-                print_counter_x = 0;
+                counter_y += 1;
+                counter_x = 0;
             }
 
-            if print_counter_y == self.map.len()
+            if counter_y == self.map.len()
             {
                 break;
             }
 
-            print_counter_x += 1;
+            str_map.push_str(&self.map[counter_y][counter_x]); 
+            counter_x += 1;
         };
+        print!("{}", str_map);
+        return str_map;
     }
 
-    pub fn generate_terrain(&mut self)
+    pub fn generate_terrain(&mut self) -> String
     {
         self.generate_empty_string();
         self.generate_floor();
         self.fill_empty_terrain();
-        self.print_final();
+        let mut ans = self.convert_map_to_str();
+        return ans;
     }
 }
 

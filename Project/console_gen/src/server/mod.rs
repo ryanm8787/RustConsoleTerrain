@@ -9,18 +9,21 @@ pub mod server {
     }
     impl Server 
     {
-        pub async fn perform_post_to_flask(&mut self) -> Result<(), Box<dyn std::error::Error>>
+        pub async fn perform_post_to_flask(&mut self, send_str : String) -> Result<(), Box<dyn std::error::Error>>
         {   
             let mut map = HashMap::new();
-            map.insert("lang", "rust");
-            map.insert("body", "json");
-
+            map.insert("data", send_str );
             let client = reqwest::Client::new();
-            let res = client.post("http://0.0.0.0:5000/data")
+
+            print!("\nSending.....\n");
+            
+            let mut post_req = format!("http://{}:{}/data", self.ip_addr_target, self.port_target); 
+            
+            print!("\nSending: {}\n", post_req);
+            let res = client.post(post_req)
                 .json(&map)
                 .send()
                 .await?;
-            
             Ok(())
         }
     } // server

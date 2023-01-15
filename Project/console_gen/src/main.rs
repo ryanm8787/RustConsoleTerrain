@@ -4,6 +4,8 @@ mod server;
 use std::fs;
 use crate::terrgen::terrgen::Generator;
 use crate::server::server::Server;
+use futures::executor::block_on;
+use tokio;
 
 fn to_my_type(value: serde_json::Value) -> i32 {
     serde_json::from_value(value).unwrap()
@@ -23,10 +25,17 @@ fn main() {
         {ceiling : to_my_type(json["ceiling"].clone()), width : to_my_type(json["width"].clone()), height : to_my_type(json["height"].clone()), 
         floor : to_my_type(json["floor"].clone()), current_gradient : 0, map : Vec::new(), indx_map : Vec::new()}; 
 
-    generator.generate_terrain();
+    let mut ans = generator.generate_terrain();
 
+    // TODO: config this port
     let mut client = Server 
-        { ip_addr_target : String::from(""), port_target : String::from("") }; 
+        { ip_addr_target : String::from("172.17.0.2"), port_target : String::from("5000") }; 
     
-    client.perform_post_to_flask();
+    tokio::runtime::Builder::new_current_thread()
+    .enable_all()
+    .build()
+    .unwrap()
+    .block_on(
+        client.perform_post_to_flask(ans)
+    );
 }
