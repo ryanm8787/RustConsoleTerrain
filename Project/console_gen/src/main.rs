@@ -29,13 +29,13 @@ fn main() {
 
     // TODO: config this port
     let mut client = Server 
-        { ip_addr_target : String::from("172.17.0.2"), port_target : String::from("5000") }; 
+        { ip_addr_target : String::from("172.17.0.3"), port_target : String::from("5000") }; 
     
     tokio::runtime::Builder::new_current_thread()
     .enable_all()
     .build()
     .unwrap()
     .block_on(
-        client.perform_post_to_flask(ans)
+        client.perform_post_to_flask(ans, to_my_type(json["width"].clone()), to_my_type(json["height"].clone()))
     );
 }

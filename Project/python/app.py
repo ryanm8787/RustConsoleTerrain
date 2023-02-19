@@ -1,5 +1,6 @@
 import os
 import json
+import utilities
 
 from flask import (
     Blueprint, flash, g, Flask, redirect, render_template, request, session, url_for
@@ -18,7 +19,8 @@ def test_page():
 def current_data():
     global my_text
     if request.method == 'POST':
-        my_text = "<p>" + json.dumps(request.get_json()) + "</p>"
+        my_text = json.dumps(request.get_json())
+        # arr = utilities.parse_json_raw_to_arr(request.get_json())
 
     return my_text
 
