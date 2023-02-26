@@ -137,7 +137,6 @@ impl Generator {
             str_map.push_str(&self.map[counter_y][counter_x]); 
             counter_x += 1;
         };
-        print!("{}", str_map);
         return str_map;
     }
 

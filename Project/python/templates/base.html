@@ -8,21 +8,21 @@
     height: 16px;
     position: absolute;
     width: 16px;
-    outline: 2px solid black;
+    outline: 0px solid black;
     background-color:  brown;
 }
 .squaregrass {
     height: 16px;
     position: absolute;
     width: 16px;
-    outline: 2px solid black;
+    outline: 0px solid black;
     background-color:  green;
 }
 .squaresky {
     height: 16px;
     position: absolute;
     width: 16px;
-    outline: 2px solid black;
+    outline: 0px solid black;
     background-color:  aqua;
 }
 </style>
@@ -34,7 +34,6 @@
         try 
         {
             console.log("Retrieving data....")
-            
             var res = await fetch("http://127.0.0.1:5000/data");
             let data = await res.json();
             return data;
@@ -51,33 +50,31 @@
 
     function draw_data(json_res)
     {
-        console.log("Retrieved data: ", json_res);
         var width = json_res['width'];
         var height = json_res['height'];
-
-        console.log("Width: ", width);
-        console.log("Height: ", height);
-        var y_counter = 150;
-        var block_size = 16;
         var data_str = json_res['data'];
-        console.log(data_str);
-        for(let j = 0; j < height; j++)
+
+        var y_counter = 150;
+        var x_counter = 0;
+        var block_size = 16;
+        var indx = 0;
+        while(indx < data_str.length)
         {
-            var x_counter = 0;
-            for (let i = 0; i < width; i++) 
+            if(data_str[indx] == '\n')
+            {            
+                y_counter += block_size;
+                x_counter = 0;  
+            }
+            else // TODO: rewrite this shit
             {
-                // Create element:
-                const indx = (j * height) + i;
                 const square_test = document.createElement("div");
                 if(data_str[indx] == '1')
                 {
-                    console.log("hello 1");
                     square_test.className = "squaregrass";
                 }
                 else if(data_str[indx] == '0')
                 {
                     square_test.className = "squaredirt";
-                    console.log("hello 0");
                 }
                 else
                 {
@@ -90,8 +87,9 @@
                 document.body.appendChild(square_test);
                 x_counter += block_size;
             }
-            y_counter += block_size;
+            ++indx;
         }
     }
+
 </script>
 </html> 
