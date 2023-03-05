@@ -18,13 +18,10 @@ pub mod server {
             map.insert("width", width.to_string());
             map.insert("height", height.to_string());
             let client = reqwest::Client::new();
-
-            print!("\nSending.....\n");
             
             let mut post_req = format!("http://{}:{}/data", self.ip_addr_target, self.port_target); 
             
             print!("\nSending: W:{} H:{}\n", width.to_string(), height.to_string());
-            print!("String size: {}", len);
             let res = client.post(post_req)
                 .json(&map)
                 .send()

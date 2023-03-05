@@ -1,6 +1,7 @@
 import os
 import json
 import utilities
+import requests
 
 from flask import (
     Blueprint, flash, g, Flask, redirect, render_template, request, session, url_for
@@ -12,6 +13,8 @@ my_text = {"data": "", "width": 0, "height": 0}
 
 @app.route('/')
 def test_page():
+    # TODO: handle exception.
+    requests.post('http://172.17.0.2:7878', json={"tempt":"r"})
     return render_template('base.html')
 
 

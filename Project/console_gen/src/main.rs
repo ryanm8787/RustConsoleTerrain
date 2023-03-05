@@ -5,13 +5,33 @@ use std::fs;
 use crate::terrgen::terrgen::Generator;
 use crate::server::server::Server;
 use futures::executor::block_on;
+
 use tokio;
+use std::net::TcpListener;
+use std::net::TcpStream;
+use std::io::BufReader;
+use std::io::BufRead;
+use std::io::Write;
 
 fn to_my_type(value: serde_json::Value) -> i32 {
     serde_json::from_value(value).unwrap()
 }
 
-// this will run an example demo
+fn handle_connection(mut stream: TcpStream) {
+    let buf_reader = BufReader::new(&mut stream);
+    let request_line = buf_reader.lines().next().unwrap().unwrap();
+
+    if request_line == "GET / HTTP/1.1" {
+        let status_line = "HTTP/1.1 200 OK";
+
+        let response = format!(
+            "{status_line}"
+        );
+
+        stream.write_all(response.as_bytes()).unwrap();
+    }
+}
+
 fn main() {
     let json_file_path = String::from("/home/rust/config/config.json"); 
 
@@ -38,4 +58,14 @@ fn main() {
     .block_on(
         client.perform_post_to_flask(ans, to_my_type(json["width"].clone()), to_my_type(json["height"].clone()))
     );
+
+    // just listen on this port for now 
+    let listener = TcpListener::bind("0.0.0.0:7878").unwrap();
+
+    for stream in listener.incoming() {
+        println!("it fucking wimdy!\n");
+        let stream = stream.unwrap();
+
+        // handle_connection(stream);
+    }
 }
